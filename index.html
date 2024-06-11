@@ -154,7 +154,17 @@
 			position: relative;
 			top: -19px;
 		}
-
+@media screen and (max-width: 600px) {
+    .discord-button {
+        display: block;
+        white-space: normal;
+        width: 100%;
+        font-size: 12px; 
+        height: auto; 
+        padding: 10px;
+        word-break: break-word; 
+    }
+}
         .discord-button .icon-external-link {
             margin-left: 10px;
             font-size: 16px;
@@ -187,11 +197,13 @@
         <p class="text-below-title">This site is linked to <a href="https://project-legion.xyz" class="link-blue">project-legion.xyz</a> to manage the custom component easily.</p>
         <form id="link-form">
             <label for="url">URL:</label>
-            <input type="url" id="url" name="url" value="https://example.com">
+            <input type="url" id="url" name="url" value="https://project-legion.xyz/">
+            <span id="url-error" class="error-message"></span>
 
             <label for="name">Button Name:</label>
-            <input type="text" id="name" name="name" value="Example Button">
-            <span id="url-error" class="error-message"></span>
+            <input type="text" id="name" name="name" value="Project Legion">
+            <span id="url-error2" class="error-message"></span>
+
         </form>
 
         <div class="output">
@@ -224,45 +236,65 @@
         const formattedDate = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()}`;
 
         document.getElementById('current-date').textContent = formattedDate;
-        function updatePreview() {
-            const urlInput = document.getElementById('url');
-            const url = urlInput.value;
-            const name = document.getElementById('name').value;
+     function updatePreview() {
+        const urlInput = document.getElementById('url');
+        const url = urlInput.value;
+        let name = document.getElementById('name').value;
+        let errorMessage = '';
 
-            if (url && isValidURL(url)) {
-                document.getElementById('url-error').textContent = '';
+        // Limit the name to 80 characters
+        if (name.length > 80) {
+            name = name.substring(0, 80);
+            document.getElementById('name').value = name;
+            errorMessage = 'No more than 80 characters allowed';
+            document.getElementById('url-error2').textContent = errorMessage;
 
-                const jsonOutput = {
-                    button: {
-                        href: url,
-                        name: name
-                    }
-                };
-
-                document.getElementById('json-output').textContent = JSON.stringify(jsonOutput, null, 4);
-
-                const previewButton = document.getElementById('preview-button');
-                previewButton.href = url;
-                previewButton.innerHTML = `${name} <i class="icon-external-link"></i>`;
-            } else {
-                
-                document.getElementById('url-error').textContent = url ? 'Invalid URL' : '';
-                
-                document.getElementById('json-output').textContent = '';
-                document.getElementById('preview-button').innerHTML = '';
-            }
         }
 
-        function isValidURL(url) {
-            
-            return url.startsWith('http://') || url.startsWith('https://');
+        if (url && isValidURL(url)) {
+            const jsonOutput = {
+                button: {
+                    href: url,
+                    name: name
+                }
+            };
+
+            document.getElementById('json-output').textContent = JSON.stringify(jsonOutput, null, 4);
+
+            const previewButton = document.getElementById('preview-button');
+            previewButton.href = url;
+            previewButton.innerHTML = `${name} <i class="icon-external-link"></i>`;
+        } else {
+            errorMessage = url ? 'Invalid URL' : '';
+            document.getElementById('json-output').textContent = '';
+            document.getElementById('preview-button').innerHTML = '';
+            document.getElementById('url-error').textContent = errorMessage;
         }
 
-      
-        document.getElementById('url').addEventListener('input', updatePreview);
-        document.getElementById('name').addEventListener('input', updatePreview);
+    }
 
-        updatePreview();
+    function isValidURL(url) {
+        return url.startsWith('http://') || url.startsWith('https://');
+    }
+function adjustContainerSize() {
+    const name = document.getElementById('name').value;
+    const previewBox = document.querySelector('.preview-box');
+    const container = document.querySelector('.container');
+
+    if (name.length > 50) {
+        previewBox.style.height = 'auto'; 
+        container.style.maxWidth = '800px'; 
+    } else {
+        previewBox.style.height = '';
+        container.style.maxWidth = '600px'; 
+    }
+}
+
+document.getElementById('name').addEventListener('input', adjustContainerSize);
+    document.getElementById('url').addEventListener('input', updatePreview);
+    document.getElementById('name').addEventListener('input', updatePreview);
+
+    updatePreview();
     </script>
 </body>
 </html>
