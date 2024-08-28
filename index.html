@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Link Button Builder</title>
+    <title>Button Builder</title>
     <style>
         @import url('https://cdn.jsdelivr.net/npm/lucide-static/font/lucide.css');
 
@@ -41,13 +42,16 @@
             color: #b9bbbe;
         }
 
-        input {
+        input, select {
             margin-bottom: 15px;
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 3px;
             background-color: #2C2F33;
             color: #fff;
+            /* Ensure all input/select elements have consistent styling */
+            box-sizing: border-box;
+            width: 100%; /* Make sure input width is consistent */
         }
 
         button {
@@ -84,20 +88,20 @@
             border-radius: 5px;
             display: flex;
             align-items: flex-start;
-			margin-top: 15px;
+            margin-top: 15px;
         }
 
         .avatar {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-			background-image: url('https://cdn.discordapp.com/avatars/782722839702142976/c2b3bf18b11deb6c33d4c6fc671605db.png?size=1024');
-			background-size: cover;
-			background-position: center;
+            background-image: url('https://sutoreitso.xyz/img/dio.jpg');
+            background-size: cover;
+            background-position: center;
             display: inline-block;
             margin-right: 15px;
             flex-shrink: 0;
-			margin-top: 20px;
+            margin-top: 20px;
         }
 
         .message {
@@ -111,7 +115,7 @@
             display: flex;
             align-items: center;
             margin-bottom: 5px;
-			margin-top: 5px;
+            margin-top: 5px;
         }
 
         .username {
@@ -133,77 +137,103 @@
         .timestamp {
             color: #72767D;
             font-size: 12px;
-			margin-left: 5px;
-			margin-bottom: -2px;
+            margin-left: 5px;
+            margin-bottom: -2px;
         }
 
         .discord-button {
-			display: inline-flex;
-			align-items: center;
-			padding: 10px 20px;
-			background-color: #4f545c;
-			color: #fff;
-			border: none;
-			border-radius: 5px;
-			text-decoration: none;
-			cursor: pointer;
-			font-size: 14px;
-			font-family: Roboto, sans-serif;
-			
-			margin-left: 55px; 
-			position: relative;
-			top: -19px;
-		}
-@media screen and (max-width: 600px) {
-    .discord-button {
-        display: block;
-        white-space: normal;
-        width: 100%;
-        font-size: 12px; 
-        height: auto; 
-        padding: 10px;
-        word-break: break-word; 
-    }
-}
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #4f545c;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: 'Mairy Extrabold', sans-serif;
+
+            margin-left: 55px;
+            position: relative;
+            top: -19px;
+        }
+        @media screen and (max-width: 600px) {
+            .discord-button {
+                display: block;
+                white-space: normal;
+                width: 100%;
+                font-size: 12px;
+                height: auto;
+                padding: 10px;
+                word-break: break-word;
+            }
+        }
+
         .discord-button .icon-external-link {
             margin-left: 10px;
             font-size: 16px;
         }
-		.error-message {
+
+        .error-message {
             color: red;
             font-size: 12px;
         }
-		.h1 {
-			text-align: center;
-		}
-		.h1text {
+
+        .h1 {
+            text-align: center;
+        }
+
+        .h1text {
             margin-bottom: 10px;
-		}
+        }
+
         .text-below-title {
-		    text-align: center;
+            text-align: center;
             font-size: 13px;
             color: #b9bbbe;
         }
-		.link-blue {
+
+        .link-blue {
             color: #fff;
             text-decoration: bold;
             cursor: pointer;
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="h1 h1text">Link Button Builder</h1>
+        <h1 class="h1 h1text">Button Builder</h1>
         <p class="text-below-title">This site is linked to <a href="https://project-legion.xyz" class="link-blue">project-legion.xyz</a> to manage the custom component easily.</p>
         <form id="link-form">
-            <label for="url">URL:</label>
-            <input type="url" id="url" name="url" value="https://project-legion.xyz/">
-            <span id="url-error" class="error-message"></span>
+            <div id="url-container">
+                <label for="url">URL:</label>
+                <input type="url" id="url" name="url" value="https://project-legion.xyz/">
+                <span id="url-error" class="error-message"></span>
+            </div>
 
             <label for="name">Button Name:</label>
             <input type="text" id="name" name="name" value="Project Legion">
             <span id="url-error2" class="error-message"></span>
+            
+            <label for="disable-link">Disable button:</label>
+            <select id="disable-link" name="disable-link">
+                <option value="false">False</option>
+                <option value="true">True</option>
+            </select>
 
+            <label for="style">Change button style:</label>
+            <select id="style" name="style">
+                <option value="primary">Primary</option>
+                <option value="secondary">Secondary</option>
+                <option value="danger">Danger</option>
+                <option value="success">Success</option>
+                <option value="link">Link</option>
+            </select>
         </form>
 
         <div class="output">
@@ -219,8 +249,8 @@
                         <div class="avatar"></div>
                         <span class="username">Sutoreitso</span>
                         <img src="https://raw.githubusercontent.com/mezotv/discord-badges/main/assets/special/Beta.svg" alt="BOT" class="bot-badge">
-						<span class="timestamp" id="current-date"></span>
-					</div>
+                        <span class="timestamp" id="current-date"></span>
+                    </div>
                     <div class="content">
                         <a id="preview-button" class="discord-button" href="#" target="_blank">Link
                             <i class="icon-external-link"></i>
@@ -236,65 +266,108 @@
         const formattedDate = `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()}`;
 
         document.getElementById('current-date').textContent = formattedDate;
-     function updatePreview() {
-        const urlInput = document.getElementById('url');
-        const url = urlInput.value;
-        let name = document.getElementById('name').value;
-        let errorMessage = '';
 
-        // Limit the name to 80 characters
-        if (name.length > 80) {
-            name = name.substring(0, 80);
-            document.getElementById('name').value = name;
-            errorMessage = 'No more than 80 characters allowed';
-            document.getElementById('url-error2').textContent = errorMessage;
+        const styleColors = {
+            primary: '#5865f2',
+            secondary: '#4f545c',
+            danger: '#ed4245',
+            success: '#3ba55c',
+            link: ''
+        };
 
-        }
+        const disabledStyleColors = {
+            primary: '#454d96',
+            secondary: '#40444b',
+            danger: '#873b40',
+            success: '#366d4c',
+            link: '#40444b'
+        };
 
-        if (url && isValidURL(url)) {
+        function updatePreview() {
+            const urlInput = document.getElementById('url');
+            const urlContainer = document.getElementById('url-container');
+            const url = urlInput.value;
+            const nameInput = document.getElementById('name');
+            let name = nameInput.value;
+            const style = document.getElementById('style').value;
+            const disableLink = document.getElementById('disable-link').value === 'true';
+            const urlError = document.getElementById('url-error');
+            const urlError2 = document.getElementById('url-error2');
+            let errorMessage = '';
+
+            // Toggle the visibility of the URL input field
+            urlContainer.style.display = style === 'link' ? 'block' : 'none';
+
+            // Limit the name to 80 characters
+            if (name.length > 80) {
+                name = name.substring(0, 80);
+                nameInput.value = name;
+                errorMessage = 'No more than 80 characters allowed';
+                urlError2.textContent = errorMessage;
+            } else {
+                urlError2.textContent = '';
+            }
+
+            const previewButton = document.getElementById('preview-button');
+            previewButton.innerHTML = name;
+            previewButton.style.color = disableLink ? '#96989b' : '#fff';
+
+            if (style === 'link') {
+                previewButton.innerHTML = `${name} <i class="icon-external-link"></i>`;
+                previewButton.style.backgroundColor = disableLink ? disabledStyleColors[style] : styleColors[style];
+            } else {
+                previewButton.innerHTML = name;
+                previewButton.style.backgroundColor = disableLink ? disabledStyleColors[style] : styleColors[style];
+            }
+
+            if (disableLink || style !== 'link') {
+                previewButton.removeAttribute('href');
+            } else {
+                previewButton.setAttribute('href', url);
+            }
+
             const jsonOutput = {
                 button: {
-                    href: url,
-                    name: name
+                    name: name,
+                    style: style,
+                    disable: disableLink
                 }
             };
 
+            if (style === 'link' && !disableLink) {
+                jsonOutput.button.href = url;
+            }
+
             document.getElementById('json-output').textContent = JSON.stringify(jsonOutput, null, 4);
 
-            const previewButton = document.getElementById('preview-button');
-            previewButton.href = url;
-            previewButton.innerHTML = `${name} <i class="icon-external-link"></i>`;
-        } else {
-            errorMessage = url ? 'Invalid URL' : '';
-            document.getElementById('json-output').textContent = '';
-            document.getElementById('preview-button').innerHTML = '';
-            document.getElementById('url-error').textContent = errorMessage;
+            urlError.textContent = isValidURL(url) || style !== 'link' ? '' : 'Invalid URL';
         }
 
-    }
+        function isValidURL(url) {
+            return url.startsWith('http://') || url.startsWith('https://');
+        }
 
-    function isValidURL(url) {
-        return url.startsWith('http://') || url.startsWith('https://');
-    }
-function adjustContainerSize() {
-    const name = document.getElementById('name').value;
-    const previewBox = document.querySelector('.preview-box');
-    const container = document.querySelector('.container');
+        function adjustContainerSize() {
+            const name = document.getElementById('name').value;
+            const previewBox = document.querySelector('.preview-box');
+            const container = document.querySelector('.container');
 
-    if (name.length > 50) {
-        previewBox.style.height = 'auto'; 
-        container.style.maxWidth = '800px'; 
-    } else {
-        previewBox.style.height = '';
-        container.style.maxWidth = '600px'; 
-    }
-}
+            if (name.length > 50) {
+                previewBox.style.height = 'auto';
+                container.style.maxWidth = '800px';
+            } else {
+                previewBox.style.height = '';
+                container.style.maxWidth = '600px';
+            }
+        }
 
-document.getElementById('name').addEventListener('input', adjustContainerSize);
-    document.getElementById('url').addEventListener('input', updatePreview);
-    document.getElementById('name').addEventListener('input', updatePreview);
+        document.getElementById('name').addEventListener('input', adjustContainerSize);
+        document.getElementById('url').addEventListener('input', updatePreview);
+        document.getElementById('name').addEventListener('input', updatePreview);
+        document.getElementById('style').addEventListener('change', updatePreview);
+        document.getElementById('disable-link').addEventListener('change', updatePreview);
 
-    updatePreview();
+        updatePreview();
     </script>
 </body>
 </html>
